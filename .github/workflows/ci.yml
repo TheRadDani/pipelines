@@ -20,7 +20,10 @@ permissions:
 jobs: #sequence of tasks
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix: # multiple os's or multiple versions of the application
+        os: [ubuntu-latest, windows-latest,macOS-latests]
 
     steps: #run commands setup tasks
     #predefined actions are saved in actions/ (reusable code is hosted there)
@@ -36,3 +39,5 @@ jobs: #sequence of tasks
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
         arguments: build
+  publish:
+    needs: build
