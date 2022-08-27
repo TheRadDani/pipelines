@@ -20,11 +20,11 @@ permissions:
 jobs: #sequence of tasks
   build:
 
-    runs-on: ${{matrix.os}}
-    strategy:
-      matrix: # multiple os's or multiple versions of the application
-        os: [ubuntu-latest, windows-latest,macOS-latests]
-
+    #runs-on: ${{matrix.os}}
+    #strategy:
+    #  matrix: # multiple os's or multiple versions of the application
+    #    os: [ubuntu-latest, windows-latest,macOS-latests]
+    runs-on: ubuntu-latest
     steps: #run commands setup tasks
     #predefined actions are saved in actions/ (reusable code is hosted there)
     - uses: actions/checkout@v3 #select an action
@@ -39,3 +39,10 @@ jobs: #sequence of tasks
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
         arguments: build
+    - name: Build and Push Docker Image
+      uses: mr-smithers-excellent/docker-build-push@v5.6  #action
+      with:
+        image: theraddani/demo-app
+        registry: docker.io
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
